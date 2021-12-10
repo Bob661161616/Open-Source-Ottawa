@@ -4,13 +4,13 @@ class Particle {
 		this.posy=posy;
 		this.velx=Math.random()+Math.random()-Math.random()-Math.random();
 		this.vely=Math.random()+Math.random()-Math.random()-Math.random();
-		this.radius=0.5;
+		this.radius=1;
 		this.ctx=ctx;
 	}
 	draw() {
-		this.ctx.beginPath()
+		this.ctx.beginPath();
 		this.ctx.arc(this.posx, this.posy, this.radius, 0, 2*Math.PI);
-		this.ctx.fillStyle="rgba(255,255,255,0.5)";
+		this.ctx.fillStyle="rgba(100,255,100,0.2)";
 		this.ctx.fill();
 	}
 	move() {
@@ -26,12 +26,13 @@ window.onload=function() {
 	console.log(window.innerHeight);
 	var particles=[];
 	var canvas=document.getElementById("canvas");
+	canvas.width=window.innerWidth;
+	canvas.height=window.innerHeight;
 	var ctx=canvas.getContext("2d");
 	init();
 
 	function init(){
 		for(let i=0;i<100;i++){
-			console.log(particles);
 			particles.push(new Particle(Math.random()*window.innerWidth, Math.random()*window.innerHeight, ctx));
 		}
 		window.requestAnimationFrame(animate);
@@ -42,6 +43,16 @@ window.onload=function() {
 		for(let i in particles){
 			particles[i].draw();
 			particles[i].move();
+		}
+		for(let i in particles){
+			for(let j in particles){
+				if(i>=j){break;}
+				ctx.lineWidth=15;
+				ctx.beginPath();
+				ctx.moveTo(particles[i].posx, particles[i].posy);
+				ctx.lineTo(particles[j].posx, particles[j].posy);
+				ctx.stroke();
+			}
 		}
 		setTimeout(function() {requestAnimationFrame(animate);}, 30);
 	}
