@@ -7,12 +7,6 @@ class Particle {
 		this.radius=1;
 		this.ctx=ctx;
 	}
-	draw() {
-		this.ctx.beginPath();
-		this.ctx.arc(this.posx, this.posy, this.radius, 0, 2*Math.PI);
-		this.ctx.fillStyle="rgba(100,255,100,0.2)";
-		this.ctx.fill();
-	}
 	move() {
 		if(this.posx+this.velx<0 || this.posx+this.velx>window.innerWidth){this.posx=window.innerWidth-this.posx}
 		if(this.posy+this.vely<0 || this.posy+this.vely>window.innerHeight){this.posy=window.innerHeight-this.posy;}
@@ -35,7 +29,7 @@ window.onload=function() {
 	init();
 
 	function init(){
-		for(let i=0;i<50;i++){
+		for(let i=0;i<80;i++){
 			particles.push(new Particle(Math.random()*window.innerWidth, Math.random()*window.innerHeight, ctx));
 		}
 		window.requestAnimationFrame(animate);
@@ -44,7 +38,6 @@ window.onload=function() {
 	function animate() {
 		ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 		for(let i in particles){
-			particles[i].draw();
 			particles[i].move();
 		}
 		for(let i in particles){
