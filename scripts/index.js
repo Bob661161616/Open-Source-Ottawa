@@ -17,19 +17,18 @@ class Particle {
 		return Math.sqrt((particle1.posx-particle2.posx)**2+(particle1.posy-particle2.posy)**2);
 	}
 }
-
+var canvas;
+var ctx;
 window.onload=function() {
-	console.log(window.innerWidth);
-	console.log(window.innerHeight);
 	var particles=[];
-	var canvas=document.getElementById("canvas");
+	canvas=document.getElementById("canvas");
 	canvas.width=window.innerWidth;
 	canvas.height=window.innerHeight;
-	var ctx=canvas.getContext("2d");
+	ctx=canvas.getContext("2d");
 	init();
 
 	function init(){
-		for(let i=0;i<80;i++){
+		for(let i=0;i<150;i++){
 			particles.push(new Particle(Math.random()*window.innerWidth, Math.random()*window.innerHeight, ctx));
 		}
 		window.requestAnimationFrame(animate);
@@ -44,7 +43,7 @@ window.onload=function() {
 			for(let j in particles){
 				if(i>=j||Particle.distance(particles[i], particles[j])>100){continue;}
 				ctx.lineWidth=1;
-				ctx.strokeStyle="rgba(255,255,255,0.1)";
+				ctx.strokeStyle="rgba(0,255,0,0.05)";
 				ctx.beginPath();
 				ctx.moveTo(particles[i].posx, particles[i].posy);
 				ctx.lineTo(particles[j].posx, particles[j].posy);
@@ -53,4 +52,9 @@ window.onload=function() {
 		}
 		setTimeout(function() {requestAnimationFrame(animate);}, 30);
 	}
+}
+
+window.onresize = function() {
+	canvas.width=window.innerWidth;
+	canvas.height=window.innerHeight;
 }
