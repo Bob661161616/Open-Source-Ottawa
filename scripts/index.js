@@ -19,6 +19,9 @@ class Particle {
 		this.posx+=this.velx;
 		this.posy+=this.vely;
 	}
+	static distance(particle1, particle2) {
+		return Math.sqrt((particle1.posx-particle2.posx)**2+(particle1.posy-particle2.posy)**2);
+	}
 }
 
 window.onload=function() {
@@ -32,7 +35,7 @@ window.onload=function() {
 	init();
 
 	function init(){
-		for(let i=0;i<100;i++){
+		for(let i=0;i<50;i++){
 			particles.push(new Particle(Math.random()*window.innerWidth, Math.random()*window.innerHeight, ctx));
 		}
 		window.requestAnimationFrame(animate);
@@ -46,8 +49,9 @@ window.onload=function() {
 		}
 		for(let i in particles){
 			for(let j in particles){
-				if(i>=j){break;}
-				ctx.lineWidth=15;
+				if(i>=j||Particle.distance(particles[i], particles[j])>100){continue;}
+				ctx.lineWidth=1;
+				ctx.strokeStyle="rgba(255,255,255,0.1)";
 				ctx.beginPath();
 				ctx.moveTo(particles[i].posx, particles[i].posy);
 				ctx.lineTo(particles[j].posx, particles[j].posy);
