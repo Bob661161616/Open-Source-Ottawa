@@ -8,8 +8,8 @@ class Particle {
 		this.ctx=ctx;
 	}
 	move() {
-		if(this.posx+this.velx<0 || this.posx+this.velx>window.innerWidth){this.posx=window.innerWidth-this.posx}
-		if(this.posy+this.vely<0 || this.posy+this.vely>window.innerHeight){this.posy=window.innerHeight-this.posy;}
+		if(this.posx+this.velx<0 || this.posx+this.velx>window.innerWidth){this.posx=Math.max(window.innerWidth-this.posx,0);}
+		if(this.posy+this.vely<0 || this.posy+this.vely>window.innerHeight){this.posy=Math.max(window.innerHeight-this.posy,0);}
 		this.posx+=this.velx;
 		this.posy+=this.vely;
 	}
@@ -25,16 +25,15 @@ window.onload=function() {
 	canvas.width=window.innerWidth;
 	canvas.height=window.innerHeight;
 	ctx=canvas.getContext("2d");
-	init();
-
-	function init(){
-		for(let i=0;i<150;i++){
-			particles.push(new Particle(Math.random()*window.innerWidth, Math.random()*window.innerHeight, ctx));
-		}
-		window.requestAnimationFrame(animate);
-	}
+	window.requestAnimationFrame(animate);
 
 	function animate() {
+		while(particles.length<window.innerWidth*window.innerHeight/3000){
+			particles.push(new Particle(Math.random()*window.innerWidth, Math.random()*window.innerHeight, ctx));
+		}
+		while(particles.length>=window.innerWidth*window.innerHeight/3000){
+			particles.pop();
+		}
 		ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 		for(let i in particles){
 			particles[i].move();
